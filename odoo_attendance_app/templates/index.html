@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Accueil {% endblock %}
+
+{% block content %}
+    {% if request.session.check_connexion == False %}
+        <div class="alert alert-danger w-50 mt-xl-5" style="margin: auto;">
+            <center>
+                <strong>Pas de connexion Internet ou l'hôte <a href="{{ request.session.url }}">{{ request.session.url }}</a> n'est pas disponible!</strong>
+            </center>
+        </div>
+    {% else %}
+        {% if request.session.employee %}
+            <div class="card w-50 h-25" style="margin: auto;border: 1px solid #714B68;">
+                {% if request.session.check_in and request.session.check_out == False %}
+                    <center><i class="fa fa-sign-in fa-6" style="font-size: 200px; color: darkseagreen;"></i></center>
+                {% else %}
+                    <center><i class="fa fa-sign-out fa-6" style="font-size: 200px; color: #dc3545;"></i></center>
+                {% endif %}
+                <div class="card-body">
+                    <center>
+                        <h4 class="card-title">{{ request.session.employee }}</h4>
+                    </center>
+                </div>
+                <center>
+                    {% if request.session.check_in and request.session.check_out %}
+                        <div class="alert alert-success">
+                            <strong>Sorti à</strong> {{ request.session.check_out }}
+                        </div>
+                    {% elif request.session.check_in and request.session.check_out == False %}
+                        <div class="alert alert-success">
+                            <strong>Arrivé à</strong> {{ request.session.check_in }}
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            <strong>Sorti à</strong> {{ request.session.check_out }}
+                        </div>
+                    {% endif %}
+                </center>
+                <a href="{% url 'check' %}"
+                   class="btn {% if request.session.check_in and request.session.check_out == False %} {{ 'btn-danger' }} {% else %}
+                    {{ 'btn-success' }} {% endif %}">
+                    {% if request.session.check_in and request.session.check_out == False %} {{ 'Sortir' }} {% else %}
+                        {{ 'Entrer' }} {% endif %}</a>
+            </div>
+
+        {% endif %}
+    {% endif %}
+{% endblock %}

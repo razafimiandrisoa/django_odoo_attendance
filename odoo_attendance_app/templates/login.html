@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %} Login {% endblock %}
+{% block content %}
+
+    <div class="card w-25" style="margin: auto;border: 1px solid #714B68;width: 35% !important;">
+        {#        <div class="card-header" style="background: #714B68;color: #FFFFFF;">Authentification</div>#}
+        <div class="card-body">
+            {% if not connected and connected != None %}
+                <div class="alert alert-danger">
+                    <center>
+                        <strong>Login ou mot de passe incorrect!</strong>
+                    </center>
+                </div>
+            {% endif %}
+            {{ request.session.uid }}
+            <center>
+                <img src="{% static 'img/images.png' %}" style="width: 50%;">
+            </center>
+            <form action="{% url 'login_request' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3 mt-3">
+                    <label for="login" class="form-label">Login:</label>
+                    <input type="text" class="form-control" id="login" placeholder="Login" required name="login">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe:</label>
+                    <input type="password" class="form-control" id="password" required placeholder="Mot de passe"
+                           name="password">
+                </div>
+                <center>
+                    <button type="submit" class="btn btn-success">Se
+                        connecter
+                    </button>
+                </center>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
